@@ -1,12 +1,13 @@
-use super::error::OxidePoemError;
-use oxide_auth::{endpoint::WebResponse, frontends::dev::Url};
 use poem::{
     http::{
+        Extensions,
         header::{InvalidHeaderValue, CONTENT_TYPE, LOCATION, WWW_AUTHENTICATE},
-        Extensions, HeaderMap, HeaderValue, StatusCode, Version,
+        HeaderMap, HeaderValue, StatusCode, Version,
     },
     Body, IntoResponse, Response, ResponseParts,
 };
+use oxide_auth::{endpoint::WebResponse, frontends::dev::Url};
+use crate::error::OxidePoemError;
 
 #[derive(Default, Clone, Debug)]
 /// Type implementing `WebResponse` and `IntoResponse` for use in route handlers

@@ -1,7 +1,11 @@
-use super::{error::OxidePoemError, response::OAuthResponse};
-use oxide_auth::endpoint::{NormalizedParameter, QueryParameter, WebRequest};
-use poem::{error::BadRequest, web::Form, FromRequest, Request, RequestBody};
 use std::borrow::Cow;
+use poem::{
+    FromRequest, Request, RequestBody,
+    error::BadRequest,
+    web::{Form},
+};
+use oxide_auth::endpoint::{NormalizedParameter, QueryParameter, WebRequest};
+use crate::{error::OxidePoemError, response::OAuthResponse};
 
 #[derive(Clone, Debug, Default)]
 /// Type implementing `WebRequest` as well as `Request` for use in route handlers
@@ -62,16 +66,12 @@ impl WebRequest for OAuthRequest {
     }
 }
 
+#[poem::async_trait]
 impl<'a> FromRequest<'a> for OAuthRequest {
     async fn from_request(req: &'a Request, body: &mut RequestBody) -> poem::Result<Self> {
-        use poem::web::Query;
+        let query = serde_urlencoded::from_str(req.uri().query().unwrap_or("")).ok();
 
-        let query = <Query<NormalizedParameter> as FromRequest>::from_request(req, body)
-            .await
-            .ok()
-            .map(|f| f.0);
-
-        let body = <Form<NormalizedParameter> as FromRequest>::from_request(req, body)
+        let body = Form::<NormalizedParameter>::from_request(req, body)
             .await
             .ok()
             .map(|f| f.0);

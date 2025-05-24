@@ -129,7 +129,7 @@ fn main() {
             .expect("Failed to launch client");
     });
 
-    support::open_in_browser(8020);
+    support::open_in_browser();
 
     server.join().unwrap();
     client.join().unwrap();
