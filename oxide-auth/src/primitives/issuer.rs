@@ -51,6 +51,9 @@ pub struct IssuedToken {
 
     /// The type of the token.
     pub token_type: TokenType,
+
+    /// Id_token, if any.
+    pub id_token: Option<String>,
 }
 
 /// The type of token, describing proper usage.
@@ -225,6 +228,7 @@ impl IssuedToken {
             refresh: None,
             until,
             token_type: TokenType::Bearer,
+            id_token: None,
         }
     }
 
@@ -278,6 +282,7 @@ impl<G: TagGrant> Issuer for TokenMap<G> {
             refresh: Some(refresh),
             until,
             token_type: TokenType::Bearer,
+            id_token: None,
         })
     }
 
@@ -421,6 +426,7 @@ impl TokenSigner {
             refresh: Some(refresh),
             until: grant.until,
             token_type: TokenType::Bearer,
+            id_token: None,
         })
     }
 

@@ -558,6 +558,7 @@ impl BearerToken {
         let token_response = TokenResponse {
             access_token: Some(self.0.token.clone()),
             refresh_token: self.0.refresh.clone(),
+            id_token: None, // ID tokens are not typically refreshed
             token_type: Some("bearer".to_owned()),
             expires_in: Some(remaining.num_seconds()),
             scope: Some(self.1.clone()),

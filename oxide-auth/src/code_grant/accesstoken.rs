@@ -25,6 +25,10 @@ pub struct TokenResponse {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub refresh_token: Option<String>,
 
+    /// The ID token for OpenID Connect.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id_token: Option<String>,
+
     /// The type of the token issued.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub token_type: Option<String>,
@@ -674,6 +678,7 @@ impl BearerToken {
         let token_response = TokenResponse {
             access_token: Some(self.0.token.clone()),
             refresh_token: self.0.refresh.clone(),
+            id_token: self.0.id_token.clone(),
             token_type: Some("bearer".to_owned()),
             expires_in: Some(remaining.num_seconds()),
             scope: Some(self.1.to_string()),
@@ -695,6 +700,7 @@ mod tests {
             IssuedToken {
                 token: "access".into(),
                 refresh: Some("refresh".into()),
+                id_token: None,
                 until: Utc::now(),
                 token_type: TokenType::Bearer,
             },
